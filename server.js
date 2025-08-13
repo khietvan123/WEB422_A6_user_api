@@ -5,6 +5,20 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const userService = require('./user-service');
 
+// 🔹 Add this block
+const passportJWT = require('passport-jwt');
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
+
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
+  secretOrKey: process.env.JWT_SECRET
+};
+
+passport.use(new JwtStrategy(jwtOptions, (jwt_payload, done) => {
+  return done(null, jwt_payload);
+}));
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -14,7 +28,6 @@ const auth = passport.authenticate('jwt', { session: false });
 
 const port = process.env.PORT || 8080;
 
-// ✅ Initialize DB first, then set up routes + start server
 userService.init(process.env.MONGO_URL)
   .then(() => {
     console.log('DB ready');
