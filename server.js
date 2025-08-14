@@ -24,11 +24,10 @@ app.use(passport.initialize());
 
 const auth = passport.authenticate('jwt', { session: false });
 
-const port = process.env.PORT || 8080;
-
 userService.init(process.env.MONGO_URL)
   .then(() => {
     console.log('DB ready');
+
     app.post('/api/user/register', async (req, res) => {
       const { userName, password, password2 } = req.body;
       try {
@@ -76,10 +75,10 @@ userService.init(process.env.MONGO_URL)
       try { res.json(await userService.removeHistory(req.user._id, req.params.q)); }
       catch { res.status(500).json([]); }
     });
+
   })
   .catch(err => {
     console.error(err);
-    process.exit(1);
   });
 
-  module.exports = app;
+module.exports = app;
