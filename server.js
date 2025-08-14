@@ -4,8 +4,6 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const userService = require('./user-service');
-
-// 🔹 Add this block
 const passportJWT = require('passport-jwt');
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
@@ -78,10 +76,10 @@ userService.init(process.env.MONGO_URL)
       try { res.json(await userService.removeHistory(req.user._id, req.params.q)); }
       catch { res.status(500).json([]); }
     });
-
-    app.listen(port, () => console.log('API listening on ' + port));
   })
   .catch(err => {
     console.error(err);
     process.exit(1);
   });
+
+  module.exports = app;
