@@ -5,17 +5,15 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const userService = require('./user-service');
 const passportJWT = require('passport-jwt');
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
 
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
-  secretOrKey: process.env.JWT_SECRET
-};
+// const jwtOptions = {
+//   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
+//   secretOrKey: process.env.JWT_SECRET
+// };
 
-passport.use(new JwtStrategy(jwtOptions, (jwt_payload, done) => {
-  return done(null, jwt_payload);
-}));
+// passport.use(new JwtStrategy(jwtOptions, (jwt_payload, done) => {
+//   return done(null, jwt_payload);
+// }));
 
 const app = express();
 app.use(cors());
