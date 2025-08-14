@@ -6,14 +6,18 @@ const passport = require('passport');
 const userService = require('./user-service');
 const passportJWT = require('passport-jwt');
 
-// const jwtOptions = {
-//   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
-//   secretOrKey: process.env.JWT_SECRET
-// };
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
 
-// passport.use(new JwtStrategy(jwtOptions, (jwt_payload, done) => {
-//   return done(null, jwt_payload);
-// }));
+// JWT Strategy setup
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
+  secretOrKey: process.env.JWT_SECRET
+};
+
+passport.use(new JwtStrategy(jwtOptions, (jwt_payload, done) => {
+  return done(null, jwt_payload);
+}));
 
 const app = express();
 app.use(cors());
@@ -48,6 +52,7 @@ userService.init(process.env.MONGO_URL)
       }
     });
 
+    // Protected routes
     app.get('/api/user/favourites', auth, async (req, res) => {
       try { res.json(await userService.getFavourites(req.user._id)); }
       catch { res.status(500).json([]); }
