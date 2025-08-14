@@ -31,8 +31,6 @@ const port = process.env.PORT || 8080;
 userService.init(process.env.MONGO_URL)
   .then(() => {
     console.log('DB ready');
-
-    // ------------------ ROUTES ------------------
     app.post('/api/user/register', async (req, res) => {
       const { userName, password, password2 } = req.body;
       try {
